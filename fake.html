@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📋 Line Numbers for Textarea</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url("https://www.useblackbox.io/style/images/bg-shape-006-p-2000.png");
+            background-size: 100%;
+            /* height: 100vh; */
+            /* width: 100%; */
+            background-color: #0b1d2a;
+            margin: 0;
+            padding: 0;
+        }
+
+        .main {
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+
+        }
+
+        .editor {
+            /* display: inline-flex;
+            gap: 10px;
+            background: #282a3a;
+            border-radius: 2px;
+            padding: 20px 10px;
+            height: 80%;
+            width: 90%;
+            overflow: hidden; */
+            gap: 10px;
+            margin-top: 20px;
+            font-family: monospace;
+            padding: 20px 10px;
+            overflow: hidden;
+            display: inline-flex;
+            height: 80%;
+            width: 90%;
+            /* Add overflow property */
+            background: rgba(255, 255, 255, 0);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.118);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            /* padding: 20px; */
+            /* width: 80%;
+            min-height: 80vh; */
+        }
+
+        .line-numbers {
+            width: 20px;
+            text-align: right;
+            overflow: hidden;
+            /* Add overflow property */
+        }
+
+        .line-numbers span {
+            counter-increment: linenumber;
+        }
+
+        .line-numbers span::before {
+            content: counter(linenumber);
+            display: block;
+            color: #506882;
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        textarea {
+            padding: 0;
+            border: 0;
+            background: #0b1d2a;
+            color: #FFF;
+            outline: none;
+            width: 100%;
+            /* Set width to 100% */
+            resize: none;
+            /* Disable textarea resizing */
+        }
+
+        .nav {
+            width: 100%;
+            color: white;
+            padding: 16px;
+            /* background-color: beige; */
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background: rgba(46, 31, 69, 0);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.118);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            /* border-radius: 10px; */
+            /* border: 1px solid rgba(255, 255, 255, 0.18); */
+        }
+
+        label {
+            font-size: 20px;
+        }
+
+        .send {
+            position: relative;
+            outline: none;
+            border: .1px solid gray;
+            z-index: 9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 40px;
+            padding: 0 40px;
+            cursor: pointer;
+            background: #1d252e;
+            color: white;
+            border-radius: .5em;
+            font-size: 15px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.118);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            /* margin-bottom: 2rem; */
+        }
+
+        .uid {
+            background: transparent;
+            font-size: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #00aaff;
+            border: none;
+            outline: none;
+            font-weight: 400;
+            /* border-bottom: 2px solid #8ca0b6; */
+            text-align: center;
+            width: 100px;
+            letter-spacing: 1px;
+        }
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .nav h2 {
+            font-size: 30px;
+        }
+
+        .nav span {
+            font-size: 10px;
+        }
+
+        footer {
+            background-color: #1d252e;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            font-size: 16px;
+            font-family: 'Inconsolata', monospace;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .footer-content a {
+            text-decoration: none;
+        }
+
+        /* .popup {
+            z-index: 999;
+
+            position: absolute;
+            top: 130%;
+            left: 30%;
+          
+            display: flex;
+           
+            transform: scale(0);
+           
+        } */
+        .popup {
+            margin: 0 auto;
+            background-color: rgba(17, 24, 39, .5);
+            border: 1px solid rgba(206, 204, 210, 0.7);
+            display: flex;
+            flex-direction: column;
+            width: 40%;
+            transform: scale(0);
+            display: none;
+            margin: 2rem 1rem;
+            border-radius: 1rem;
+            box-shadow: 0 15px 25px rgba(0, 0, 0, .6);
+            align-items: center;
+            justify-content: center;
+            transition: all .5s ease-in-out;
+            /* filter: blur(5px); */
+            backdrop-filter: blur(5px);
+        }
+
+
+        .email {
+            height: 50px;
+            width: 90%;
+            color: white;
+            outline: none;
+            border-radius: 10px;
+            border: 2px solid rgb(206, 204, 210);
+            z-index: 10;
+            margin-top: 2rem;
+            padding: 1rem;
+            background-color: #1d252e;
+            /* margin-bottom: 1rem; */
+            /* box-shadow: inset 0 0 0 1px #1e252c; */
+        }
+
+
+        .sub {
+            width: 90%;
+            border: 2px solid rgb(206, 204, 210);
+            margin: 2rem 1rem;
+            z-index: 9;
+            height: 50px;
+            color: white;
+            outline: none;
+            padding: 1rem;
+            border-radius: 10px;
+            background-color: #1d252e;
+            /* box-shadow: inset 0 0 0 1px #1e252c; */
+        }
+
+        #send {
+            position: relative;
+            outline: none;
+            /* border: .1px solid gray; */
+            z-index: 9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* height: 40px; */
+            padding: 15px 40px;
+            cursor: pointer;
+            background: #1d252e;
+            color: white;
+            border-radius: .5em;
+            font-size: 15px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.118);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            /* border-radius: 10px; */
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+    </style>
+</head>
+
+<body onload="getSession()">
+    <div class="main">
+
+        <div class="nav">
+            <div>
+                <h2>Share <span> From Code2Pdf</span></h2>
+            </div>
+            <div>
+                <label for="uid">UID :</label><input type="number" id="sessionUid" placeholder="" value=""
+                    onchange="dymretrieve()" class="uid">
+            </div>
+            <div class="btn">
+                <button id="submitBtn" class="send">Share PDF</button>
+            </div>
+        </div>
+        <div class="editor">
+            <div class="line-numbers" id="line-numbers">
+                <span></span>
+            </div>
+            <textarea id="txtArea" onchange="dymretrieve()"></textarea>
+        </div>
+        <div class="popup">
+            <ion-icon onclick="closepopup()"
+                style="font-size: 3rem;position: absolute; cursor: pointer; left: 100%;top:-2rem; color: white; transform: rotate(45deg);"
+                name="add-outline"></ion-icon>
+            <input name="Email" placeholder="Enter Your Email" required="true" title="Enter Your Email" class="email"
+                type="email">
+            <input name="text" placeholder="Enter Your Subject" subject" required="true" title="Enter Your Subject"
+                class="sub" type="text">
+            <div class="launch">
+                <button type="submit" id="send" class="">Send</button>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="footer-content">
+            <p>All Rights Reserved. | Designed and developed with passion by <a href="https://artbyadi77.netlify.app/"
+                    style="color: #ddd; ">Aditya</a>, Kishan & Bhavya.</p>
+        </div>
+    </footer>
+    <script>
+        const emailInput = document.querySelector(".email");
+        const subjectInput = document.querySelector(".sub");
+        const sendButtonBox = document.querySelector(".launch");
+        const send = document.querySelector("#send");
+        const txtarea = document.getElementById("txtArea");
+        const popup = document.querySelector('.popup');
+
+
+
+        function closepopup() {
+            const popup = document.querySelector('.popup');
+            popup.style.transform = 'scale(0)'
+        }
+        function handleTextareaKeyPress(event) {
+            if (event.keyCode === 13) {
+                popup.style.transform = 'scale(1)'
+                // document.body.style.filter = 'blur(5px)';
+                event.preventDefault();
+            }
+
+        }
+    </script>
+
+    <script>
+
+        async function getSession() {
+            const codeSession = localStorage.getItem('cShareCode');
+            if (codeSession != null) {
+                const resp1 = await fetch("http://localhost:4000/retrisession", {
+                    method: "POST",
+                    headers: {
+                        "Content-type": "application/json; charset=UTF-8", // Set the content type
+                    },
+                    body: JSON.stringify({ uid: codeSession }), // Convert data to JSON string
+                });
+
+                if (!resp1.ok) {
+                    const resp2 = await fetch("http://localhost:4000/newsession");
+
+                    if (!resp2.ok) {
+                        throw new Error("Network response was not ok");
+                    }
+
+                    var data2 = await resp2.text();
+                    console.log(`New session UID: ${data2}`);
+                    localStorage.setItem('cShareCode', data2)
+
+                    // Display the session UID in the <span> element
+                    const sessionUidElement = document.getElementById("sessionUid");
+                    sessionUidElement.textContent = data2;
+                }
+
+                const data = await resp1.text();
+                txtArea.innerHTML = data;
+                document.getElementById("sessionUid").value = codeSession;
+                console.log(data);
+
+            }
+            else {
+                const resp3 = await fetch("http://localhost:4000/newsession");
+
+                if (!resp3.ok) {
+                    throw new Error("Network response was not ok");
+                }
+
+                var data3 = await resp3.text();
+                console.log(`New session UID: ${data3}`);
+                localStorage.setItem('cShareCode', data3)
+
+                // Display the session UID in the <span> element
+                const sessionUidElement = document.getElementById("sessionUid");
+                sessionUidElement.value = data3;
+            }
+        }
+
+
+
+        txtArea.addEventListener("input", function () {
+            // Get the current text content of the textarea
+            const txtarea = txtArea.value;
+            const uid = document.getElementById("sessionUid").value;
+            data = { sourceCode: txtarea, uid: uid };
+            console.log(data);
+            // console.log(data['uid']);
+            // console.log(data['sourceCode']);
+            fetch("http://localhost:4000/updsession", {
+                method: "POST",
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8", // Set the content type
+                },
+                body: JSON.stringify(data), // Convert data to JSON string
+            })
+                .catch(error => {
+                    console.error("Error:", error);
+                });
+        });
+
+        async function dymretrieve() {
+            const val = document.getElementById("sessionUid").value;
+            if (val >= 10000) {
+                const resp = await fetch("http://localhost:4000/retrisession", {
+                    method: "POST",
+                    headers: {
+                        "Content-type": "application/json; charset=UTF-8", // Set the content type
+                    },
+                    body: JSON.stringify({ uid: val }), // Convert data to JSON string
+                });
+                if (!resp.ok) {
+                    console.log("no session found");
+                }
+                const data = await resp.text();
+                txtArea.innerHTML = data;
+                document.getElementById("sessionUid").value = val;
+                localStorage.setItem('cShareCode', val)
+
+            } else {
+                //pass
+            }
+        }
+
+    </script>
+    <script>
+        const textarea = document.getElementById('txtArea');
+        const lineNumbers = document.getElementById('line-numbers');
+
+        textarea.addEventListener('keyup', event => {
+            const numberOfLines = event.target.value.split('\n').length;
+
+            lineNumbers.innerHTML = Array(numberOfLines)
+                .fill('<span></span>')
+                .join('');
+        });
+
+        textarea.addEventListener('keydown', event => {
+            if (event.key === 'Tab') {
+                const start = textarea.selectionStart;
+                const end = textarea.selectionEnd;
+
+                textarea.value = textarea.value.substring(0, start) + '\t' + textarea.value.substring(end);
+
+                event.preventDefault();
+            }
+        });
+
+        // Add scroll synchronization
+        textarea.addEventListener('scroll', () => {
+            lineNumbers.scrollTop = textarea.scrollTop;
+        });
+
+        lineNumbers.addEventListener('scroll', () => {
+            textarea.scrollTop = lineNumbers.scrollTop;
+        });
+    </script>
+</body>
+
+</html>
