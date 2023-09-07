@@ -344,7 +344,7 @@
         async function getSession() {
             const codeSession = localStorage.getItem('cShareCode');
             if (codeSession != null) {
-                const resp1 = await fetch("http://192.210.218.100:80/retrisession", {
+                const resp1 = await fetch("https://192.210.218.100:80/retrisession", {
                     method: "POST",
                     headers: {
                         "Content-type": "application/json; charset=UTF-8", // Set the content type
@@ -353,7 +353,7 @@
                 });
 
                 if (!resp1.ok) {
-                    const resp2 = await fetch("http://192.210.218.100:80/newsession");
+                    const resp2 = await fetch("https://192.210.218.100:80/newsession");
 
                     if (!resp2.ok) {
                         throw new Error("Network response was not ok");
@@ -375,7 +375,7 @@
 
             }
             else {
-                const resp3 = await fetch("http://192.210.218.100:80/newsession");
+                const resp3 = await fetch("https://192.210.218.100:80/newsession");
 
                 if (!resp3.ok) {
                     throw new Error("Network response was not ok");
@@ -401,7 +401,7 @@
             console.log(data);
             // console.log(data['uid']);
             // console.log(data['sourceCode']);
-            fetch("http://192.210.218.100:80/updsession", {
+            fetch("https://192.210.218.100:80/updsession", {
                 method: "POST",
                 headers: {
                     "Content-type": "application/json; charset=UTF-8", // Set the content type
@@ -416,7 +416,7 @@
         async function dymretrieve() {
             const val = document.getElementById("sessionUid").value;
             if (val >= 10000) {
-                const resp = await fetch("http://192.210.218.100:80/retrisession", {
+                const resp = await fetch("https://192.210.218.100:80/retrisession", {
                     method: "POST",
                     headers: {
                         "Content-type": "application/json; charset=UTF-8", // Set the content type
