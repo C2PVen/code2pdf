@@ -344,7 +344,7 @@
         async function getSession() {
             const codeSession = localStorage.getItem('cShareCode');
             if (codeSession != null) {
-                const resp1 = await fetch("https://192.210.218.100:80/retrisession", {
+                const resp1 = await fetch("http://192.210.218.100:80/retrisession", {
                     method: "POST",
                     headers: {
                         "Content-type": "application/json; charset=UTF-8", // Set the content type
