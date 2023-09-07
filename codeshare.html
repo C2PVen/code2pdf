@@ -353,7 +353,7 @@
                 });
 
                 if (!resp1.ok) {
-                    const resp2 = await fetch("https://192.210.218.100:80/newsession");
+                    const resp2 = await fetch("http://192.210.218.100:80/newsession");
 
                     if (!resp2.ok) {
                         throw new Error("Network response was not ok");
@@ -375,7 +375,7 @@
 
             }
             else {
-                const resp3 = await fetch("https://192.210.218.100:80/newsession");
+                const resp3 = await fetch("http://192.210.218.100:80/newsession");
 
                 if (!resp3.ok) {
                     throw new Error("Network response was not ok");
